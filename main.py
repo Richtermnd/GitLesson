@@ -1,21 +1,22 @@
 import random
 
-from PyQt5 import uic
+from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtCore import QPoint
 from PyQt5.QtGui import QPainter, QColor
-from PyQt5.QtWidgets import QMainWindow
+from UI import Ui_MainWindow
 
 
-class MainWindow(QMainWindow):
+class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
-        super(MainWindow, self).__init__()
-        uic.loadUi(r'UI.ui', self)
+        super().__init__()
+        self.setupUi(self)
         self.pushButton.clicked.connect(self.repaint)
 
     def paintEvent(self, event):
         qp = QPainter()
         qp.begin(self)
-        qp.setBrush(QColor(255, 255, 0))
+        r, g, b = random.randrange(256), random.randrange(256), random.randrange(256)
+        qp.setBrush(QColor(r, g, b))
         qp.drawEllipse(*self.rand_circle())
         qp.end()
 
@@ -28,6 +29,7 @@ class MainWindow(QMainWindow):
 if __name__ == '__main__':
     import sys
     from PyQt5.QtWidgets import QApplication
+
     app = QApplication(sys.argv)
     mw = MainWindow()
     mw.show()
